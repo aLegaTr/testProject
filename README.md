@@ -1,2 +1,2 @@
 # testProject
-Test work with Git
+Test project with SpringBoot and MySQL
