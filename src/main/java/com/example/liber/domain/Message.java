@@ -8,8 +8,8 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class Message {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
 
     @NotBlank(message = "Please fill the message")
     @Length(max = 2048, message = "Message too long (more 2kB)")
@@ -52,11 +52,19 @@ public class Message {
         this.tag = tag;
     }
 
-    public Long getId() {
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
