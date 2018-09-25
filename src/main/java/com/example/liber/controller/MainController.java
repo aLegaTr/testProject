@@ -3,6 +3,7 @@ package com.example.liber.controller;
 import com.example.liber.domain.Message;
 import com.example.liber.domain.User;
 import com.example.liber.repos.MessageRepos;
+import com.example.liber.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -84,6 +85,10 @@ public class MainController {
     )
     {
         Set<Message> messages = user.getMessages();
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
+        model.addAttribute("userChannel", user);
         model.addAttribute("messages", messages);
         model.addAttribute("message", message);
         model.addAttribute("isCurrentUser", currentUser.equals(user));

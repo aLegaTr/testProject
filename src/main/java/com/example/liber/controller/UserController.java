@@ -24,7 +24,6 @@ public class UserController {
         model.addAttribute("users", userService.findAll());
         return "userList";
     }
-
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model){
@@ -32,7 +31,6 @@ public class UserController {
         model.addAttribute("roles", Role.values());
         return "userEdit";
     }
-
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String userSave(@RequestParam String username,
@@ -44,7 +42,6 @@ public class UserController {
 
         return "redirect:/user";
     }
-
     @GetMapping("profile")
     public String getProfile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
@@ -52,7 +49,6 @@ public class UserController {
 
         return "profile";
     }
-
     @PostMapping("profile")
     public String updateProfile(
             @AuthenticationPrincipal User user,
@@ -63,6 +59,40 @@ public class UserController {
 
         return "redirect:/user/profile";
     }
+    @GetMapping("subscribe/{user}")
+    public String subscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user
+    ){
+        userService.subcribe(currentUser, user);
 
+        return "redirect:/user-messages/"+user.getId();
+    }
+    @GetMapping("unsubscribe/{user}")
+    public String unSubscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user
+    ){
+        userService.unSubcribe(currentUser, user);
+
+        return "redirect:/user-messages/"+user.getId();
+    }
+    @GetMapping("{type}/{user}/list")
+    public String userList(
+            Model model,
+            @PathVariable User user,
+            @PathVariable String type
+    ){
+        model.addAttribute("userChannel", user);
+        model.addAttribute("type", type);
+
+        if ("subscriptions".equals(type)){
+            model.addAttribute("users", user.getSubscriptions());
+        }
+        else {
+            model.addAttribute("users", user.getSubscribers());
+        }
+        return "subscriptions";
+    }
 }
 
